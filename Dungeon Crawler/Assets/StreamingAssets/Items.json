@@ -1,0 +1,52 @@
+[
+//Weapons (id 0-99)
+  {
+    "id": 0,
+	"type": "Weapon",
+    "title": "Dagger",
+    "damage": 3,
+	"armor": 0,
+	"hands": 1,
+	"feet": 0,
+	"head": 0,
+	"body": 0,
+	"legs": 0
+  },
+  {
+    "id": 1,
+	"type": "Weapon",
+    "title": "Short Sword",
+    "damage": 5,
+	"armor": 0,
+	"hands": 1,
+	"feet": 0,
+	"head": 0,
+	"body": 0,
+	"legs": 0
+  },
+   {
+    "id": 2,
+	"type": "Weapon",
+    "title": "Claymore",
+    "damage": 20,
+	"armor": 0,
+	"hands": 2,
+	"feet": 0,
+	"head": 0,
+	"body": 0,
+	"legs": 0
+  },
+  // Armor (id 100-199)
+  {
+  	"id": 100,
+	"type": "Armor",
+	"title": "Small Shield",
+	"damage": 0,
+	"armor": 20,
+	"hands": 1,
+	"feet": 0,
+	"head": 0,
+	"body": 0,
+	"legs": 0
+  }
+]
