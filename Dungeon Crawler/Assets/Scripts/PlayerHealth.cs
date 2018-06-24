@@ -5,7 +5,12 @@ using UnityEngine;
 public class PlayerHealth : MonoBehaviour {
 
 	public int playerHealth;
+	public int maxHealth;
+
 	NeutralStats neutralStats;
+	PlayerStats playerStats;
+	Inventory inventory;
+
 	public static int AC;
 	int hitChance;
 	int damageReduction;
@@ -13,7 +18,12 @@ public class PlayerHealth : MonoBehaviour {
 
 	void Start()
 	{
-	AC = 10 - Inventory.armorModifier;
+		inventory = GetComponent<Inventory> ();
+		playerStats = GetComponent<PlayerStats> ();
+
+		AC = 10 - Inventory.armorModifier;
+		maxHealth = 10 + playerStats.Constitution;
+		playerHealth = maxHealth;
 	}
 
 	void OnTriggerEnter(Collider other) // if the player collides with a monster it compares the players hitchance to a D20.
@@ -39,6 +49,7 @@ public class PlayerHealth : MonoBehaviour {
 			{
 				if (AC >= 0) {
 					playerHealth -= neutralStats.monsterDamage; 
+					inventory.UpdateBottomDisplay ();
 					Debug.Log ("You have taken " + neutralStats.monsterDamage + " damage.");
 				} 
 				else if (AC < 0) 
@@ -63,7 +74,13 @@ public class PlayerHealth : MonoBehaviour {
 			{
 			Destroy (this.gameObject); //player is deleted if health falls below zero.
 			Debug.Log ("You are dead.");
-		}
+			}
+
+		if (playerHealth > maxHealth) 
+			{
+				playerHealth = maxHealth;
+			}
+
 	}
 			
 }

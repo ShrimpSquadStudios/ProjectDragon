@@ -14,6 +14,7 @@ public class DestroyNeutral : MonoBehaviour {
 	void Start()
 	{
 		neutralStats = this.GetComponent<NeutralStats> ();
+		playerStats = GameObject.Find ("Player").GetComponent<PlayerStats> ();
 
 		inventory = GameObject.Find ("Player").GetComponent<Inventory> ();
 	}
@@ -44,8 +45,9 @@ public class DestroyNeutral : MonoBehaviour {
             {
 				PlayerStats.XP += neutralStats.monsterXP;
 				PlayerStats.TallyXP ();
+				playerStats.CheckLevelUp ();
 				inventory.UpdateBottomDisplay ();
-				Debug.Log ("you are now level " + PlayerStats.Level);
+				Debug.Log ("you are now level " + PlayerStats.NewLevel);
                 Destroy(this.gameObject); //object is deleted if health falls below zero.
             }
         }

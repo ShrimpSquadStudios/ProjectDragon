@@ -45,11 +45,11 @@ public class Inventory : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
 	{
+		playerHealth = GetComponent<PlayerHealth> ();
 		database = GetComponent<ItemDatabase> ();
 
 		displayText = "Welcome to the game."; // this is the welcome message to the game.
 		invText.text = displayText; // invText is what will be displayed to the player in the UI. displayText is what the functions feed into to store what will be fed into the UI.
-		playerHealth = GetComponent<PlayerHealth> ();
 		PlayerStats.TallyXP ();
 		UpdateBottomDisplay ();
 	}
@@ -265,11 +265,11 @@ public class Inventory : MonoBehaviour {
 	}
 
 	public void UpdateBottomDisplay () //this function updates the text ui at the bottom of the view.
-	{
-		healthText = "Health: " + playerHealth.playerHealth;
+	{				
+		healthText = "Health: " + playerHealth.playerHealth + " / " + playerHealth.maxHealth;
 		aCText = "AC: " + PlayerHealth.AC;
 		attackText = "Attack: D" + Inventory.weaponDamage;
-		levelText = "Level: " + PlayerStats.Level;
+		levelText = "Level: " + PlayerStats.NewLevel;
 		xPText = "XP: " + PlayerStats.XP;
 
 		healthDisplay.text = healthText;
