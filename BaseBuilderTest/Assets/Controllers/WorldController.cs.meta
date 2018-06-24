@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 9d42b26144e28764e929dd1150449f8a
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - spr_grass: {fileID: 21300000, guid: dac623e5b2bb90545932ecb605dab7fb, type: 3}
+  - spr_dirt: {fileID: 21300000, guid: a7f39a8f0b3309047b2eeff80a2d5e9c, type: 3}
+  - spr_sand: {fileID: 21300000, guid: 503bf5d5b06bf9346aa21db777a667f7, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
