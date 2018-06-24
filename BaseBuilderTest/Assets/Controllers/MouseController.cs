@@ -29,4 +29,9 @@ public class MouseController : MonoBehaviour {
         prevFramePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         curFramePos.z = 0;
     }
+
+    Tile GetHoveredTile()
+    {
+        return null;
+    }
 }

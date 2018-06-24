@@ -5,12 +5,12 @@ using System;
 
 public class Tile {
 
-	public enum TileType { Grass, Dirt, Sand, Path };
+	public enum TileType { Empty, Water, Mountain, Building, Path };
 
     Action<Tile> changeTileType;
 
 
-	TileType type = TileType.Grass;
+	TileType type = TileType.Empty;
 	public TileType Type {
 		get {
 			return type;
@@ -53,6 +53,7 @@ public class Tile {
 		this.world = world;
 		this.x = x;
 		this.z = z;
+        type = TileType.Empty;
 	}
 
     public void RegisterChangeTileType(Action<Tile> callback)
