@@ -45,11 +45,103 @@ public class World {
 
     // Randomly assign a type to each tile
     public void GenerateTiles() {
-        Debug.Log("Randomizing tiles.");
-
         ////// RIVERS //////
+        Debug.Log("Generating river...");
+        int midX = width / 2; // halfway X-value
+        int curX = Random.Range(midX/3, width-midX/3); // x-value for the start point of the river
+        bool startWest = curX < midX; // whether the river starts in the west half
+        AddRvr(curX, height - 1);
 
+        // basic generation
+        for (var z = height - 1; z >= 0; z--)
+        {
+            if ((curX < midX && startWest) || (curX > midX && !startWest))
+            {
+                int rand = Random.Range(0, 2);
+                if (rand == 0)
+                    if (startWest)
+                    {
+                        if (curX < width - 1)
+                            curX++;
+                    }
+                    else if (curX > 0)
+                        curX--;
+            }
+            else // past center of map
+            {
+                int rand = Random.Range(0, 2);
+                if (rand == 0)
+                {
+                    if (curX < width - 1)
+                        curX++;
+                }
+                else if (rand == 1)
+                {
+                    if (curX > 0)
+                        curX--;
+                }
+            }
+            AddRvr(curX, z);
+        }
+        UpdateTileTypes();
+
+        // thicken river
+        var thickness = 5;
+        List newRiverTiles = new List();
+        foreach (Tile t in rvrTiles)
+        {
+            // get new river thickness
+            int rand = Random.Range(0, 10);
+            switch (rand) // 40% chance of changing thickness
+            {
+                case 0:
+                    if (thickness < 6)
+                        thickness++;
+                    break;
+                case 1:
+                    if (thickness > 4)
+                        thickness--;
+                    break;
+            }
+            
+            // mandatory tiles
+            if (t.X - 1 > 0)
+                newRiverTiles.Add(tiles[t.X - 1, t.Z]);
+            if (t.X + 1 < width - 1)
+                newRiverTiles.Add(tiles[t.X + 1, t.Z]);
+            if (t.X - 2 > 0)
+                newRiverTiles.Add(tiles[t.X - 2, t.Z]);
+            if (t.X + 2 < width - 1)
+                newRiverTiles.Add(tiles[t.X + 2, t.Z]);
+
+            // three tiles away
+            if (thickness > 4)
+            {
+                if (t.X - 3 > 0)
+                    newRiverTiles.Add(tiles[t.X - 3, t.Z]);
+                if (t.X + 3 < width - 1)
+                    newRiverTiles.Add(tiles[t.X + 3, t.Z]);
+            }
+
+            // four tiles away
+            if (thickness > 5)
+            {
+                if (t.X - 4 > 0)
+                    newRiverTiles.Add(tiles[t.X - 4, t.Z]);
+                if (t.X + 4 < width - 1)
+                    newRiverTiles.Add(tiles[t.X + 4, t.Z]);
+            }
+                
+            
+        }
+        foreach (Tile t in newRiverTiles)
+            AddRvr(t.X, t.Z); // how can we make this not suck??
+        UpdateTileTypes();
+        
         ////// MOUNTAINS //////
+        Debug.Log("Generating mountains...");
+
+        // basic generation
         for (var x = 0; x < width; x++)
         {
             for (var z = 0; z < height; z++)
@@ -115,15 +207,9 @@ public class World {
                     int rand = Random.Range(0, MOUNTAIN_FILL_ODDS);
                     if (rand == 0)
                     if (numNearbyMountains > 2)
-                    {
                         tiles[x, z].Type = Tile.TileType.Mountain;
-                        Debug.Log("A new mountain was born!");
-                    }
                     else if (numNearbyMountains > 0 && rand == 0)
-                    {
                         tiles[x, z].Type = Tile.TileType.Mountain;
-                        Debug.Log("A new mountain was born!");
-                    }
                 }
             }
 
