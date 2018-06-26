@@ -56,39 +56,38 @@ public class World {
             {
                 if (Random.Range(0, MOUNTAIN_ODDS) == 0)
                 {
-                    mtnTiles.Add(tiles[x, z]); // this tile
+                    AddMtn(x, z); // this tile
                     if (z > 0) // above
-                        mtnTiles.Add(tiles[x, z - 1]);
+                        AddMtn(x, z - 1);
                     if (z < height - 1) // below
-                        mtnTiles.Add(tiles[x, z + 1]);
+                        AddMtn(x, z + 1);
                     if (x > 0)
                     {
-                        mtnTiles.Add(tiles[x - 1, z]); // left
+                        AddMtn(x - 1, z); // left
                         if (z > 0)
-                            mtnTiles.Add(tiles[x - 1, z - 1]); // top left
+                            AddMtn(x - 1, z - 1); // top left
                         if (z < height - 1)
-                            mtnTiles.Add(tiles[x - 1, z + 1]); // bottom left
+                            AddMtn(x - 1, z + 1); // bottom left
                     }
                     if (x < width - 1)
                     {
-                        mtnTiles.Add(tiles[x + 1, z]); // right
+                        AddMtn(x + 1, z); // right
                         if (z > 0)
-                            mtnTiles.Add(tiles[x + 1, z - 1]); // top right
+                            AddMtn(x + 1, z - 1); // top right
                         if (z < height - 1)
-                            mtnTiles.Add(tiles[x + 1, z + 1]); // bottom right
+                            AddMtn(x + 1, z + 1); // bottom right
                     }
                     if (x > 1)
-                        mtnTiles.Add(tiles[x - 2, z]); // two left
+                        AddMtn(x - 2, z); // two left
                     if (x < width - 2)
-                        mtnTiles.Add(tiles[x + 2, z]); // two right
+                        AddMtn(x + 2, z); // two right
                     if (z > 1)
-                        mtnTiles.Add(tiles[x, z - 2]); // two above
+                        AddMtn(x, z - 2); // two above
                     if (z < height - 2)
-                        mtnTiles.Add(tiles[x, z + 2]); // two below
+                        AddMtn(x, z + 2); // two below
                 }
             }
         }
-
         UpdateTileTypes();
 
         // if a tile is next to two or more mountains it has a chance to become a mountain
@@ -129,7 +128,6 @@ public class World {
             }
 
         }
-
         UpdateTileTypes();
 	}
 
@@ -150,5 +148,17 @@ public class World {
         foreach (Tile t in mtnTiles)
             if (t.Type != Tile.TileType.Water)
                 t.Type = Tile.TileType.Mountain;
+    }
+
+    // Adds a given tile to the list of mountain tiles
+    void AddMtn(int x, int z)
+    {
+        mtnTiles.Add(tiles[x, z]);
+    }
+
+    // Adds a given tile to the list of river tiles
+    void AddRvr(int x, int z)
+    {
+        rvrTiles.Add(tiles[x, z]);
     }
 }
