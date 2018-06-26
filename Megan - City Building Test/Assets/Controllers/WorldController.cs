@@ -9,7 +9,7 @@ public class WorldController : MonoBehaviour {
     public Sprite spr_empty;
     public GameObject planePrefab;
 
-    World world;
+    public World world;
 
 	// Use this for initialization
 	void Start () {
@@ -25,14 +25,17 @@ public class WorldController : MonoBehaviour {
 
                 tile_go.name = "Tile_" + x + "_" + y;
                 tile_go.transform.position = new Vector3(tile_data.X , 0 , tile_data.Y);
-                tile_go.transform.Rotate(Vector3.right * 90);
-                
                 tile_go.transform.SetParent(this.transform, true);
 
+                /*
                 tile_go.AddComponent<SpriteRenderer>();
                 tile_go.GetComponent<SpriteRenderer>().sprite = spr_empty;
+                */
 
                 Instantiate(planePrefab, tile_go.transform.position, transform.rotation);
+                planePrefab.name = "Plane_" + x + "_" + y;
+                
+
                 tile_data.RegisterTileTypeChangedCallback( (tile) => { OnTileTypeChanged(tile, tile_go); });
             }
         }
@@ -40,6 +43,10 @@ public class WorldController : MonoBehaviour {
         world.RandomizeTiles();
 	}
 	
+    public World getWorld()
+    {
+        return world;
+    }
 	// Update is called once per frame
 	void Update () {
 
@@ -49,11 +56,11 @@ public class WorldController : MonoBehaviour {
     {
         if (tile_data.Type == Tile.TileType.Floor)
         {
-            tile_go.GetComponent<SpriteRenderer>().sprite = spr_grass;
+            return;
+            // tile_go.GetComponent<SpriteRenderer>().sprite = spr_grass;
         }
         else
         {
-            Debug.Log("Empty Chosen");
             return;
         }
     }

@@ -4,29 +4,47 @@ using UnityEngine;
 
 public class BuildingController : MonoBehaviour {
 
-    public GameObject prefab; 
+    public GameObject prefab;
+    World world;
+
+    WorldController worldController;
 
 	// Use this for initialization
-	void Start () {
-		
-	}
+	void Start ()
+    {
+        // Find the world from the world controller
+        worldController = GameObject.FindGameObjectWithTag("world").GetComponent<WorldController>();
+        world = worldController.world;
+    }
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {
         if (Input.GetMouseButtonDown(0))
         {
-            Debug.Log("Pressed primary button.");
-
             // Ray cast to get mouse position
             // https://forum.unity.com/threads/placing-objects-with-a-mouse-click.66121/ 
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast (ray,out hit))
             {
-                Debug.Log("Hit location" + hit.transform);
+                // Raycast found collider
+                Debug.Log("Hit location" + hit.transform.position);
                 Transform objectHit = hit.transform;
 
-                Instantiate(prefab, objectHit.position, transform.rotation);
+                Tile tile_data = world.GetTileAt((int)objectHit.transform.position.x, (int)objectHit.transform.position.z);
+
+                // If type of tile is not building, add the building and set the type to building
+                if (tile_data.Type != Tile.TileType.Building)
+                {
+                    Instantiate(prefab, objectHit.position, transform.rotation);
+                    tile_data.Type = Tile.TileType.Building;
+                }
+
+                else
+                {
+                    Debug.Log("Tile already at location");
+                }         
             }       
         }
     }

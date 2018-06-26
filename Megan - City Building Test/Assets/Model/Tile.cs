@@ -5,7 +5,7 @@ using System;
 
 public class Tile{
 
-    public enum TileType { Empty, Floor};
+    public enum TileType { Empty, Floor, Building};
 
     TileType type = TileType.Empty;
 

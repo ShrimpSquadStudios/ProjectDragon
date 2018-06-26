@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class World{
-
+public class World
+{
     Tile[,] tiles;
 
     int width;
@@ -51,7 +51,7 @@ public class World{
         {
             for (int y = 0; y < height; y++)
             {
-                if(Random.Range(0, 2) == 0)
+                if (Random.Range(0, 2) == 0)
                 {
                     tiles[x, y].Type = Tile.TileType.Empty;
                 }
@@ -67,7 +67,7 @@ public class World{
     // Finds tile type at location
     public Tile GetTileAt(int x, int y)
     {
-        if(x > width || x < 0 || y > height || y < 0)
+        if (x > width || x < 0 || y > height || y < 0)
         {
             Debug.LogError("Tile (" + x + "," + y + ") is out of range.");
             return null;
