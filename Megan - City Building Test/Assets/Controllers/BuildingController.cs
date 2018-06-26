@@ -35,27 +35,27 @@ public class BuildingController : MonoBehaviour {
                 int currentZ = (int)objectHit.transform.position.z;
 
                 // If type of tile is not building, add the building and set the type to building
-                for (int a = currentX - 1; a <= currentX + 1; a++)
+                if (world.GetTileAt(currentX, currentZ).Type != Tile.TileType.Building)
                 {
-                    for (int b = currentZ - 1; b <= currentZ + 1; b++)
+                    for (int a = currentX - 1; a <= currentX + 1; a++)
                     {
-                        Tile tile_data = world.GetTileAt(a, b);
-
-                        if (tile_data.Type != Tile.TileType.Building)
+                        for (int b = currentZ - 1; b <= currentZ + 1; b++)
                         {
-                            if ((a == currentX) && (b == currentZ))
+                            Tile tile_data = world.GetTileAt(a, b);
+
+                            if (tile_data.Type != Tile.TileType.Building)
                             {
                                 Instantiate(prefab, objectHit.position, transform.rotation);
+                                tile_data.Type = Tile.TileType.Building;
                             }
-                            tile_data.Type = Tile.TileType.Building;
-                        }
 
-                        else
-                        {
-                            Debug.Log("Building already at location");
+                            else
+                            {
+                                Debug.Log("Building already at location");
+                            }
                         }
                     }
-                }     
+                }  
             }       
         }
     }
