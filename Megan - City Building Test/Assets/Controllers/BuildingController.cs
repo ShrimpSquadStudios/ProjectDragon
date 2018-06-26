@@ -12,7 +12,6 @@ public class BuildingController : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
     {
-        // Find the world from the world controller
         worldController = GameObject.FindGameObjectWithTag("world").GetComponent<WorldController>();
         world = worldController.world;
     }
@@ -32,19 +31,31 @@ public class BuildingController : MonoBehaviour {
                 Debug.Log("Hit location" + hit.transform.position);
                 Transform objectHit = hit.transform;
 
-                Tile tile_data = world.GetTileAt((int)objectHit.transform.position.x, (int)objectHit.transform.position.z);
+                int currentX = (int)objectHit.transform.position.x;
+                int currentZ = (int)objectHit.transform.position.z;
 
                 // If type of tile is not building, add the building and set the type to building
-                if (tile_data.Type != Tile.TileType.Building)
+                for (int a = currentX - 1; a <= currentX + 1; a++)
                 {
-                    Instantiate(prefab, objectHit.position, transform.rotation);
-                    tile_data.Type = Tile.TileType.Building;
-                }
+                    for (int b = currentZ - 1; b <= currentZ + 1; b++)
+                    {
+                        Tile tile_data = world.GetTileAt(a, b);
 
-                else
-                {
-                    Debug.Log("Tile already at location");
-                }         
+                        if (tile_data.Type != Tile.TileType.Building)
+                        {
+                            if ((a == currentX) && (b == currentZ))
+                            {
+                                Instantiate(prefab, objectHit.position, transform.rotation);
+                            }
+                            tile_data.Type = Tile.TileType.Building;
+                        }
+
+                        else
+                        {
+                            Debug.Log("Building already at location");
+                        }
+                    }
+                }     
             }       
         }
     }
