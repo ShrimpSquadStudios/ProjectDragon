@@ -5,10 +5,17 @@ using UnityEngine;
 
 public class World {
 
-    // procedural generation settings
-    const int MOUNTAIN_ODDS = 500; // inverse odds of a mountain spawning on a given tile
-    const int MOUNTAIN_PASSES = 5; // number of map passes to fill out mountain tiles
+    // mountain procedural generation settings
+    const int MOUNTAIN_ODDS = 750; // inverse odds of a mountain spawning on a given tile
+    const int MOUNTAIN_PASSES = 7; // number of map passes to fill out mountain tiles
     const int MOUNTAIN_FILL_ODDS = 3; // inverse odds of a mountain being filled by a pass
+    const bool MOUNTAIN_FILL_GAPS = true; // whether to autofill 1x1 gaps in mountains
+
+    // river procedural generation settings
+    const int RIVER_CHANGE_ODDS = 10; // odds of the river changing in radius per z-value
+    const int RIVER_SPAWN_RANGE = 4; // portion of the north side the river is allowed to spawn in
+    const int RIVER_MIN_RADIUS = 3; // minimum radius of rivers
+    const int RIVER_MAX_RADIUS = 5; // maximum radius of rivers
 
 	Tile[,] tiles;
     List rvrTiles = new List();
@@ -48,11 +55,11 @@ public class World {
         ////// RIVERS //////
         Debug.Log("Generating river...");
         int midX = width / 2; // halfway X-value
-        int curX = Random.Range(midX/3, width-midX/3); // x-value for the start point of the river
+        int curX = Random.Range(midX/RIVER_SPAWN_RANGE, width-midX/RIVER_SPAWN_RANGE); // x-value for the start point of the river
         bool startWest = curX < midX; // whether the river starts in the west half
         AddRvr(curX, height - 1);
 
-        // basic generation
+        // basic generation (one tile wide from north to south)
         for (var z = height - 1; z >= 0; z--)
         {
             if ((curX < midX && startWest) || (curX > midX && !startWest))
@@ -85,55 +92,32 @@ public class World {
         }
         UpdateTileTypes();
 
-        // thicken river
-        var thickness = 5;
+        // thicken river stochastically
+        var radius = RIVER_MIN_RADIUS + (RIVER_MAX_RADIUS - RIVER_MIN_RADIUS) / 2;
         List newRiverTiles = new List();
         foreach (Tile t in rvrTiles)
         {
-            // get new river thickness
-            int rand = Random.Range(0, 10);
-            switch (rand) // 40% chance of changing thickness
+            int rand = Random.Range(0, RIVER_CHANGE_ODDS);
+            switch (rand)
             {
                 case 0:
-                    if (thickness < 6)
-                        thickness++;
+                    if (radius < RIVER_MAX_RADIUS)
+                        radius++;
                     break;
                 case 1:
-                    if (thickness > 4)
-                        thickness--;
+                    if (radius > RIVER_MIN_RADIUS)
+                        radius--;
                     break;
             }
-            
-            // mandatory tiles
-            if (t.X - 1 > 0)
-                newRiverTiles.Add(tiles[t.X - 1, t.Z]);
-            if (t.X + 1 < width - 1)
-                newRiverTiles.Add(tiles[t.X + 1, t.Z]);
-            if (t.X - 2 > 0)
-                newRiverTiles.Add(tiles[t.X - 2, t.Z]);
-            if (t.X + 2 < width - 1)
-                newRiverTiles.Add(tiles[t.X + 2, t.Z]);
-
-            // three tiles away
-            if (thickness > 4)
+            for (var xPos = 1; xPos < radius; xPos++)
             {
-                if (t.X - 3 > 0)
-                    newRiverTiles.Add(tiles[t.X - 3, t.Z]);
-                if (t.X + 3 < width - 1)
-                    newRiverTiles.Add(tiles[t.X + 3, t.Z]);
-            }
-
-            // four tiles away
-            if (thickness > 5)
-            {
-                if (t.X - 4 > 0)
-                    newRiverTiles.Add(tiles[t.X - 4, t.Z]);
-                if (t.X + 4 < width - 1)
-                    newRiverTiles.Add(tiles[t.X + 4, t.Z]);
-            }
-                
-            
+                if (t.X - xPos > 0)
+                    newRiverTiles.Add(tiles[t.X - xPos, t.Z]);
+                if (t.X + xPos < width - 1)
+                    newRiverTiles.Add(tiles[t.X + xPos, t.Z]);
+            }            
         }
+
         foreach (Tile t in newRiverTiles)
             AddRvr(t.X, t.Z); // how can we make this not suck??
         UpdateTileTypes();
@@ -190,31 +174,28 @@ public class World {
             {
                 for (var z = 0; z < height; z++)
                 {
-                    var numNearbyMountains = 0;
-                    if (x > 0)
-                        if (tiles[x - 1, z].Type == Tile.TileType.Mountain)
-                            numNearbyMountains++;
-                    if (x < width - 1)
-                        if (tiles[x + 1, z].Type == Tile.TileType.Mountain)
-                            numNearbyMountains++;
-                    if (z > 0)
-                        if (tiles[x, z - 1].Type == Tile.TileType.Mountain)
-                            numNearbyMountains++;
-                    if (z < height - 1)
-                        if (tiles[x, z + 1].Type == Tile.TileType.Mountain)
-                            numNearbyMountains++;
+                    var numNearbyMountains = CountNearbyMountains(x, z);
 
                     int rand = Random.Range(0, MOUNTAIN_FILL_ODDS);
+
                     if (rand == 0)
-                    if (numNearbyMountains > 2)
-                        tiles[x, z].Type = Tile.TileType.Mountain;
-                    else if (numNearbyMountains > 0 && rand == 0)
-                        tiles[x, z].Type = Tile.TileType.Mountain;
+                    {
+                        if (numNearbyMountains > 2)
+                            tiles[x, z].Type = Tile.TileType.Mountain;
+                        else if (numNearbyMountains > 0 && rand == 0)
+                            tiles[x, z].Type = Tile.TileType.Mountain;
+                    }
                 }
             }
 
         }
         UpdateTileTypes();
+
+        if (MOUNTAIN_FILL_GAPS)
+            for (var x = 0; x < width; x++)
+                for (var z = 0; z < height; z++)
+                    if (CountNearbyMountains(x, z) == 4)
+                        tiles[x, z].Type = Tile.TileType.Mountain;
 	}
 
     // Returns a tile at the given coordinates
@@ -246,5 +227,24 @@ public class World {
     void AddRvr(int x, int z)
     {
         rvrTiles.Add(tiles[x, z]);
+    }
+
+    // Returns the number of mountains adjacent to a given tile coordinate
+    int CountNearbyMountains(int x, int z)
+    {
+        var count = 0;
+        if (x > 0)
+            if (tiles[x - 1, z].Type == Tile.TileType.Mountain)
+                count++;
+        if (x < width - 1)
+            if (tiles[x + 1, z].Type == Tile.TileType.Mountain)
+                count++;
+        if (z > 0)
+            if (tiles[x, z - 1].Type == Tile.TileType.Mountain)
+                count++;
+        if (z < height - 1)
+            if (tiles[x, z + 1].Type == Tile.TileType.Mountain)
+                count++;
+        return count;
     }
 }
