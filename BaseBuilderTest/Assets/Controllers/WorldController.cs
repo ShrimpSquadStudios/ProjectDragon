@@ -35,7 +35,7 @@ public class WorldController : MonoBehaviour {
 			}
 		}
 
-        world.RandomizeTiles();
+        world.GenerateTiles();
 	}
 
     void Update() { }

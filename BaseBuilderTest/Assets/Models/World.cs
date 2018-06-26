@@ -11,8 +11,10 @@ public class World {
     const int MOUNTAIN_FILL_ODDS = 3; // inverse odds of a mountain being filled by a pass
 
 	Tile[,] tiles;
+    List rvrTiles = new List();
+    List mtnTiles = new List();
 
-	int width;
+    int width;
 	public int Width {
 		get {
 			return width;
@@ -30,8 +32,8 @@ public class World {
 		this.width = width;
 		this.height = height;
 
+        // Create a list of tiles
 		tiles = new Tile[width, height];
-
 		for (int x = 0; x < width; x++) {
 			for (int z = 0; z < height; z++) {
 				tiles[x,z] = new Tile(this, x, z);
@@ -42,60 +44,53 @@ public class World {
 	}
 
     // Randomly assign a type to each tile
-    public void RandomizeTiles() {
+    public void GenerateTiles() {
         Debug.Log("Randomizing tiles.");
 
         ////// RIVERS //////
-        List riverTiles = new List();
 
         ////// MOUNTAINS //////
-        List mountainTiles = new List();
         for (var x = 0; x < width; x++)
         {
             for (var z = 0; z < height; z++)
             {
-                int rand = Random.Range(0, MOUNTAIN_ODDS);
-                if (rand == 0)
+                if (Random.Range(0, MOUNTAIN_ODDS) == 0)
                 {
-                    mountainTiles.Add(tiles[x, z]); // this tile
+                    mtnTiles.Add(tiles[x, z]); // this tile
                     if (z > 0) // above
-                        mountainTiles.Add(tiles[x, z - 1]);
+                        mtnTiles.Add(tiles[x, z - 1]);
                     if (z < height - 1) // below
-                        mountainTiles.Add(tiles[x, z + 1]);
+                        mtnTiles.Add(tiles[x, z + 1]);
                     if (x > 0)
                     {
-                        mountainTiles.Add(tiles[x - 1, z]); // left
+                        mtnTiles.Add(tiles[x - 1, z]); // left
                         if (z > 0)
-                            mountainTiles.Add(tiles[x - 1, z - 1]); // top left
+                            mtnTiles.Add(tiles[x - 1, z - 1]); // top left
                         if (z < height - 1)
-                            mountainTiles.Add(tiles[x - 1, z + 1]); // bottom left
+                            mtnTiles.Add(tiles[x - 1, z + 1]); // bottom left
                     }
                     if (x < width - 1)
                     {
-                        mountainTiles.Add(tiles[x + 1, z]); // right
+                        mtnTiles.Add(tiles[x + 1, z]); // right
                         if (z > 0)
-                            mountainTiles.Add(tiles[x + 1, z - 1]); // top right
+                            mtnTiles.Add(tiles[x + 1, z - 1]); // top right
                         if (z < height - 1)
-                            mountainTiles.Add(tiles[x + 1, z + 1]); // bottom right
+                            mtnTiles.Add(tiles[x + 1, z + 1]); // bottom right
                     }
                     if (x > 1)
-                        mountainTiles.Add(tiles[x - 2, z]); // two left
+                        mtnTiles.Add(tiles[x - 2, z]); // two left
                     if (x < width - 2)
-                        mountainTiles.Add(tiles[x + 2, z]); // two right
+                        mtnTiles.Add(tiles[x + 2, z]); // two right
                     if (z > 1)
-                        mountainTiles.Add(tiles[x, z - 2]); // two above
+                        mtnTiles.Add(tiles[x, z - 2]); // two above
                     if (z < height - 2)
-                        mountainTiles.Add(tiles[x, z + 2]); // two below
+                        mtnTiles.Add(tiles[x, z + 2]); // two below
                 }
             }
         }
 
-        // update tile types
-        foreach (Tile t in mountainTiles)
-        {
-            if (t.Type != Tile.TileType.Water)
-                t.Type = Tile.TileType.Mountain;
-        }
+        UpdateTileTypes();
+
         // if a tile is next to two or more mountains it has a chance to become a mountain
         for (var i = 0; i < MOUNTAIN_PASSES; i++) // multiple passes to fill in the blanks
         {
@@ -135,19 +130,25 @@ public class World {
 
         }
 
-        // update tile types
-        foreach (Tile t in mountainTiles) {
-            if (t.Type != Tile.TileType.Water)
-                t.Type = Tile.TileType.Mountain;
-        }
+        UpdateTileTypes();
 	}
 
+    // Returns a tile at the given coordinates
 	public Tile GetTileAt(int x, int z) {
 		if (x > width || x < 0 || z > height || z < 0) {
 			Debug.LogError("Tile coordinates are invalid. (" + x + "," + z + ")");
 			return null;
 		}
 		return tiles[x,z];
-	}
+    }
 
+    // Sets tiles in tile lists to the appropriate type
+    void UpdateTileTypes()
+    {
+        foreach (Tile t in rvrTiles)
+            t.Type = Tile.TileType.Water;
+        foreach (Tile t in mtnTiles)
+            if (t.Type != Tile.TileType.Water)
+                t.Type = Tile.TileType.Mountain;
+    }
 }
