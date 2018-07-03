@@ -8,6 +8,8 @@ public class WorldController : MonoBehaviour {
     public Sprite spr_grass;
     public Sprite spr_empty;
     public GameObject planePrefab;
+    public GameObject WoodPrefab;
+    public GameObject IronPrefab;
 
     public World world;
 
@@ -15,7 +17,7 @@ public class WorldController : MonoBehaviour {
 	void Start () {
         world = new World();
 
-        // Create a GameObject for each tile
+        // Create a GameObject for each tile for raycasting
         for (int x = 0; x < world.Width; x++)
         {
             for (int y = 0; y < world.Height; y++)
@@ -27,41 +29,30 @@ public class WorldController : MonoBehaviour {
                 tile_go.transform.position = new Vector3(tile_data.X , 0 , tile_data.Y);
                 tile_go.transform.SetParent(this.transform, true);
 
-                /*
-                tile_go.AddComponent<SpriteRenderer>();
-                tile_go.GetComponent<SpriteRenderer>().sprite = spr_empty;
-                */
-
                 Instantiate(planePrefab, tile_go.transform.position, transform.rotation);
                 planePrefab.name = "Plane_" + x + "_" + y;
-                
 
-                tile_data.RegisterTileTypeChangedCallback( (tile) => { OnTileTypeChanged(tile, tile_go); });
+                // Randomly decide if a harvest node should be placed
+                int placeNode = UnityEngine.Random.Range(0, 50);
+
+                switch (placeNode)
+                {
+                    case 0:
+                        Instantiate(WoodPrefab, tile_go.transform.position, transform.rotation);
+                        tile_data.Type = Tile.TileType.Building;
+                        break;
+                    case 1:
+                        Instantiate(IronPrefab, tile_go.transform.position, transform.rotation);
+                        tile_data.Type = Tile.TileType.Building;
+                        break;
+                    default:
+                        break;
+                }
             }
         }
-
-        world.RandomizeTiles();
 	}
-	
-    public World getWorld()
-    {
-        return world;
-    }
 	// Update is called once per frame
 	void Update () {
 
-    }
-
-    void OnTileTypeChanged(Tile tile_data, GameObject tile_go)
-    {
-        if (tile_data.Type == Tile.TileType.Floor)
-        {
-            return;
-            // tile_go.GetComponent<SpriteRenderer>().sprite = spr_grass;
-        }
-        else
-        {
-            return;
-        }
     }
 }

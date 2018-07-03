@@ -44,26 +44,6 @@ public class World
         Debug.Log("World created with " + (width * height) + " tiles.");
     }
 
-    // Randomly determine floor and empty tiles
-    public void RandomizeTiles()
-    {
-        for (int x = 0; x < width; x++)
-        {
-            for (int y = 0; y < height; y++)
-            {
-                if (Random.Range(0, 2) == 0)
-                {
-                    tiles[x, y].Type = Tile.TileType.Empty;
-                }
-                else
-                {
-                    tiles[x, y].Type = Tile.TileType.Floor;
-                }
-            }
-
-        }
-    }
-
     // Finds tile type at location
     public Tile GetTileAt(int x, int y)
     {

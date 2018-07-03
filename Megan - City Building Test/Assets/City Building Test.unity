@@ -209,6 +209,8 @@ MonoBehaviour:
   spr_empty: {fileID: 21300000, guid: 00075abb82664d24f8150e1381dc3c4d, type: 3}
   planePrefab: {fileID: 1929923524221438, guid: e22df4846e25ff540964ef663352a3fe,
     type: 2}
+  WoodPrefab: {fileID: 100000, guid: 6d58037af810b4021ac921a71033e575, type: 3}
+  IronPrefab: {fileID: 1013505705485544, guid: 97a1275a2620a4a42b4dcf0262cefdc8, type: 2}
 --- !u!4 &347582935
 Transform:
   m_ObjectHideFlags: 0

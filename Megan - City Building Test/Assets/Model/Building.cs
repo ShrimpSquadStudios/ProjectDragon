@@ -7,6 +7,4 @@ public class Building{
     public enum BuildingType { House, Mill};
 
     BuildingType Type = BuildingType.House;
-
-
 }
