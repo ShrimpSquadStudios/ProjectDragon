@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class WorkerMovement : MonoBehaviour {
 
     GameObject[] goals;
-    public Text ironText;
+    //public Text ironText;
     int ironCount;
 
     // Use this for initialization
@@ -51,7 +51,7 @@ public class WorkerMovement : MonoBehaviour {
         {
             Destroy(collision.gameObject);
             ironCount++;
-            ironText.text = "Iron: " + ironCount.ToString();
+            //ironText.text = "Iron: " + ironCount.ToString();
         }
     }
 }
