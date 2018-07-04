@@ -1,16 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class WorkerMovement : MonoBehaviour {
 
     GameObject[] goals;
-    
+    public Text ironText;
+    int ironCount;
 
     // Use this for initialization
     void Start()
     {
-
+        ironCount = 0;
     }
 
     // Update is called once per frame
@@ -45,13 +47,11 @@ public class WorkerMovement : MonoBehaviour {
     // https://docs.unity3d.com/ScriptReference/Collision-gameObject.html
     void OnCollisionEnter(Collision collision)
     {
-        Destroy(collision.gameObject);
-        Debug.Log("found iron");
         if (collision.gameObject.tag == "Iron")
         {
-            
-            
-            //Destroy(GetComponent<BoxCollider>());
+            Destroy(collision.gameObject);
+            ironCount++;
+            ironText.text = "Iron: " + ironCount.ToString();
         }
     }
 }
