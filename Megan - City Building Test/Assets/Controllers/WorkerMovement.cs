@@ -7,7 +7,7 @@ public class WorkerMovement : MonoBehaviour {
 
     GameObject[] goals;
     //public Text ironText;
-    int ironCount;
+    public int ironCount;
 
     // Use this for initialization
     void Start()

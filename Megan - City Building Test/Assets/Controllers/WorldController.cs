@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using UnityEngine.UI;
 
 public class WorldController : MonoBehaviour {
 
@@ -13,8 +12,6 @@ public class WorldController : MonoBehaviour {
     public GameObject IronPrefab;
 
     public World world;
-
-    public int ironCount;
 
 	// Use this for initialization
 	void Start () {
@@ -47,7 +44,6 @@ public class WorldController : MonoBehaviour {
                     case 1:
                         Instantiate(IronPrefab, tile_go.transform.position, transform.rotation);
                         tile_data.Type = Tile.TileType.Building;
-                        ironCount ++;
                         break;
                     default:
                         break;
