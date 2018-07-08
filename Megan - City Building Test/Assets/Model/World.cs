@@ -6,6 +6,7 @@ public class World
 {
     Tile[,] tiles;
     int ironCount;
+
     public int GetIronCount()
     {
         return ironCount;
@@ -13,7 +14,7 @@ public class World
 
     public void IncrementIronCount(int ironGathered)
     {
-        ironCount += ironGathered;
+        ironCount = ironCount + ironGathered;
     }
 
     int width;
@@ -35,12 +36,10 @@ public class World
     }
 
     // Creates a tiled world
-    public World(int width = 100, int height = 100, int ironCount = 0)
+    public World(int width = 100, int height = 100)
     {
         this.width = width;
         this.height = height;
-
-        this.ironCount = ironCount;
 
         tiles = new Tile[width, height];
 

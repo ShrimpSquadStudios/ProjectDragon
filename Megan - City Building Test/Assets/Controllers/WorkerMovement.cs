@@ -7,13 +7,13 @@ public class WorkerMovement : MonoBehaviour {
     GameObject[] goals;
 
     World world;
-
-    public WorldController worldController;
+    WorldController worldController;
 
     // Use this for initialization
     void Start()
     {
-
+        worldController = GameObject.FindGameObjectWithTag("world").GetComponent<WorldController>();
+        world = worldController.world;
     }
 
     // Update is called once per frame
