@@ -5,6 +5,7 @@ using UnityEngine;
 public class BuildingController : MonoBehaviour {
 
     public GameObject prefab;
+
     World world;
 
     WorldController worldController;
@@ -43,15 +44,17 @@ public class BuildingController : MonoBehaviour {
                         {
                             Tile tile_data = world.GetTileAt(a, b);
 
-                            if (tile_data.Type != Tile.TileType.Building)
+                            if (tile_data.Type != Tile.TileType.Building && world.GetIronCount() >= 5)
                             {
                                 Instantiate(prefab, objectHit.position, transform.rotation);
+                                world.IncrementIronCount(-5);
+
                                 tile_data.Type = Tile.TileType.Building;
                             }
 
                             else
                             {
-                                Debug.Log("Building already at location");
+                                
                             }
                         }
                     }

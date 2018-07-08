@@ -5,6 +5,16 @@ using UnityEngine;
 public class World
 {
     Tile[,] tiles;
+    int ironCount;
+    public int GetIronCount()
+    {
+        return ironCount;
+    }
+
+    public void IncrementIronCount(int ironGathered)
+    {
+        ironCount += ironGathered;
+    }
 
     int width;
     public int Width
@@ -25,10 +35,12 @@ public class World
     }
 
     // Creates a tiled world
-    public World(int width = 100, int height = 100)
+    public World(int width = 100, int height = 100, int ironCount = 0)
     {
         this.width = width;
         this.height = height;
+
+        this.ironCount = ironCount;
 
         tiles = new Tile[width, height];
 

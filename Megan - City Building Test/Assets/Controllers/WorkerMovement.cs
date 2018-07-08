@@ -1,18 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class WorkerMovement : MonoBehaviour {
 
     GameObject[] goals;
-    //public Text ironText;
-    public int ironCount;
+
+    World world;
+
+    public WorldController worldController;
 
     // Use this for initialization
     void Start()
     {
-        ironCount = 0;
+
     }
 
     // Update is called once per frame
@@ -49,9 +50,10 @@ public class WorkerMovement : MonoBehaviour {
     {
         if (collision.gameObject.tag == "Iron")
         {
+            world = worldController.world;
             Destroy(collision.gameObject);
-            ironCount++;
-            //ironText.text = "Iron: " + ironCount.ToString();
+            world.IncrementIronCount(1);
+            Debug.Log(world.GetIronCount());
         }
     }
 }

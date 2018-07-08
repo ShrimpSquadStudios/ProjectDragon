@@ -222,6 +222,11 @@ Prefab:
       propertyPath: ironText
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 114728221421005396, guid: 5f25ceb0bd13dfd488792e49083907ad,
+        type: 2}
+      propertyPath: worldController
+      value: 
+      objectReference: {fileID: 347582934}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5f25ceb0bd13dfd488792e49083907ad, type: 2}
   m_IsPrefabParent: 0
