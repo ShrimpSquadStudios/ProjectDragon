@@ -18,6 +18,15 @@ public class World
     }
 
     static int woodCount;
+    public int GetWoodCount()
+    {
+        return woodCount;
+    }
+
+    public void IncrementWoodCount(int woodGathered)
+    {
+        woodCount = woodCount + woodGathered;
+    }
 
     int width;
     public int Width

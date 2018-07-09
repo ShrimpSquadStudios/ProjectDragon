@@ -7,7 +7,7 @@ public class WorkerMovement : MonoBehaviour {
     GameObject[] goals;
 
     public float collectTime = 3.0f;
-    public GameObject collisionGO;
+    GameObject collisionGO;
     enum resourceType {Iron,Wood};
     resourceType currentResource;
 
@@ -42,9 +42,15 @@ public class WorkerMovement : MonoBehaviour {
         if (!timerActive && resourceCollected)
         {
             Destroy(collisionGO);
-            world.IncrementIronCount(1);
+            if (collisionGO.gameObject.tag == "Iron")
+            {
+                world.IncrementIronCount(1);
+            }
+            else if (collisionGO.gameObject.tag == "wood")
+            {
+                world.IncrementWoodCount(1);
+            }
             resourceCollected = false;
-            Debug.Log(world.GetIronCount());
         }
 
         else

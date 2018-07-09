@@ -29,7 +29,7 @@ public class UI_MainController : MonoBehaviour {
         ironCount = worldcontroller.world.GetIronCount();
 
         /// TODO: Hook up once the backend exists
-        // woodCount = worldcontroller.world.GetWoodCount();
+        woodCount = worldcontroller.world.GetWoodCount();
         // workerCount = worldcontroller.world.GetWorkerCount();
         // buildingCount = worldcontroller.world.GetBuildingCount();
 
