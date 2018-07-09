@@ -44,7 +44,7 @@ public class BuildingController : MonoBehaviour {
                         {
                             Tile tile_data = world.GetTileAt(a, b);
 
-                            if (tile_data.Type != Tile.TileType.Building && world.GetIronCount() >= 5)
+                            if (world.GetIronCount() >= 5)
                             {
                                 Instantiate(prefab, objectHit.position, transform.rotation);
                                 world.IncrementIronCount(-5);
@@ -54,7 +54,7 @@ public class BuildingController : MonoBehaviour {
 
                             else
                             {
-                                
+                                Debug.LogFormat("You need more resources");
                             }
                         }
                     }

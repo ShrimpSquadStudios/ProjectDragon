@@ -9,14 +9,12 @@ public class WorldController : MonoBehaviour {
     public GameObject WoodPrefab;
     public GameObject IronPrefab;
     public GameObject worker;
-    public Button workerButton;
 
     public World world;
 
 	// Use this for initialization
 	void Start () {
         world = new World();
-        workerButton.onClick.AddListener(TaskOnClick);
 
         // Create a GameObject for each tile for raycasting
         for (int x = 0; x < world.Width; x++)
@@ -54,11 +52,16 @@ public class WorldController : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
-
+	void Update ()
+    {
+        if (Input.GetKeyDown("w"))
+        {
+            print("Spawn Worker");
+            SpawnWorker();
+        }
     }
 
-    void TaskOnClick()
+    void SpawnWorker()
     {
         if (world.GetIronCount() >= 5)
         {

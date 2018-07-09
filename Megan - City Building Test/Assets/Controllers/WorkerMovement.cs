@@ -6,6 +6,13 @@ public class WorkerMovement : MonoBehaviour {
 
     GameObject[] goals;
 
+    public float collectTime = 3.0f;
+    public GameObject collisionGO;
+
+    private float timer;
+    private bool timerActive = false;
+    private bool resourceCollected = false;
+
     World world;
     WorldController worldController;
 
@@ -19,7 +26,29 @@ public class WorkerMovement : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        MoveObject();
+         if (timerActive)
+        {
+            timer += 1 * Time.deltaTime;
+            if (timer > collectTime)
+            {
+                timerActive = false;
+                timer = 0.0f;
+            }
+        }
+
+        if (!timerActive && resourceCollected)
+        {
+            Destroy(collisionGO);
+            world.IncrementIronCount(1);
+            resourceCollected = false;
+            Debug.Log(world.GetIronCount());
+        }
+
+        else
+        {
+            MoveObject();
+        }
+
     }
 
     // https://docs.unity3d.com/ScriptReference/GameObject.FindGameObjectsWithTag.html
@@ -45,17 +74,19 @@ public class WorkerMovement : MonoBehaviour {
         agent.destination = closestGoal.transform.position;
     }
 
+    // On collision with Iron, collect iron
     // https://docs.unity3d.com/ScriptReference/Collision-gameObject.html
     void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == "Iron")
         {
+            timerActive = true;
+            resourceCollected = true;
+            collisionGO = collision.gameObject;
             world = worldController.world;
-            Destroy(collision.gameObject);
-            world.IncrementIronCount(1);
-            Debug.Log(world.GetIronCount());
         }
     }
+
 }
 
 
