@@ -8,6 +8,8 @@ public class WorkerMovement : MonoBehaviour {
 
     public float collectTime = 3.0f;
     public GameObject collisionGO;
+    enum resourceType {Iron,Wood};
+    resourceType currentResource;
 
     private float timer;
     private bool timerActive = false;
@@ -21,6 +23,7 @@ public class WorkerMovement : MonoBehaviour {
     {
         worldController = GameObject.FindGameObjectWithTag("world").GetComponent<WorldController>();
         world = worldController.world;
+        currentResource = resourceType.Wood;
     }
 
     // Update is called once per frame
@@ -49,13 +52,34 @@ public class WorkerMovement : MonoBehaviour {
             MoveObject();
         }
 
+        if (Input.GetKeyDown("r"))
+        {
+            if (currentResource == resourceType.Iron)
+            {
+                currentResource = resourceType.Wood;
+            }
+
+            else if (currentResource == resourceType.Wood)
+            {
+                currentResource = resourceType.Iron;
+            }
+        }
     }
 
     // https://docs.unity3d.com/ScriptReference/GameObject.FindGameObjectsWithTag.html
     // Find closest Iron and move towards it
     void MoveObject()
     {
-        goals = GameObject.FindGameObjectsWithTag("Iron");
+        if (currentResource == resourceType.Iron)
+        {
+            goals = GameObject.FindGameObjectsWithTag("Iron");
+        }
+        
+        else if (currentResource == resourceType.Wood)
+        {
+            goals = GameObject.FindGameObjectsWithTag("wood");
+        }
+
         GameObject closestGoal = null;
         float distance  = Mathf.Infinity;
         Vector3 position = transform.position;
@@ -78,7 +102,7 @@ public class WorkerMovement : MonoBehaviour {
     // https://docs.unity3d.com/ScriptReference/Collision-gameObject.html
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Iron")
+        if (collision.gameObject.tag == "Iron" || collision.gameObject.tag == "wood")
         {
             timerActive = true;
             resourceCollected = true;

@@ -5,8 +5,8 @@ using UnityEngine;
 public class World
 {
     Tile[,] tiles;
-    int ironCount;
 
+    static int ironCount;
     public int GetIronCount()
     {
         return ironCount;
@@ -16,6 +16,8 @@ public class World
     {
         ironCount = ironCount + ironGathered;
     }
+
+    static int woodCount;
 
     int width;
     public int Width

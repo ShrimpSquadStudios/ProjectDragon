@@ -6,6 +6,7 @@ TagManager:
   tags:
   - world
   - Iron
+  - wood
   layers:
   - Default
   - TransparentFX
