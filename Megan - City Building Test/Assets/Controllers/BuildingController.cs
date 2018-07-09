@@ -44,10 +44,10 @@ public class BuildingController : MonoBehaviour {
                         {
                             Tile tile_data = world.GetTileAt(a, b);
 
-                            if (world.GetIronCount() >= 5)
+                            if (world.GetWoodCount() >= 5)
                             {
                                 Instantiate(prefab, objectHit.position, transform.rotation);
-                                world.IncrementIronCount(-5);
+                                world.IncrementWoodCount(-5);
 
                                 tile_data.Type = Tile.TileType.Building;
                             }
