@@ -61,7 +61,7 @@ public class WorldController : MonoBehaviour {
         }
     }
 
-    void SpawnWorker()
+    public void SpawnWorker()
     {
         if (world.GetIronCount() >= 5)
         {
