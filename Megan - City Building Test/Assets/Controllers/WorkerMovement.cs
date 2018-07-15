@@ -6,7 +6,7 @@ public class WorkerMovement : MonoBehaviour {
 
     GameObject[] goals;
 
-    public float collectTime = 3.0f;
+    public float collectTime = 1.0f;
     GameObject collisionGO;
     enum resourceType {Iron,Wood};
     resourceType currentResource;

@@ -4,14 +4,20 @@ using UnityEngine;
 
 public class BuildingController : MonoBehaviour {
 
-    public GameObject prefab;
+    public GameObject prefabHouse;
+    public GameObject prefabMill;
+
 
     World world;
 
     WorldController worldController;
 
-	// Use this for initialization
-	void Start ()
+    Building.BuildingType buildingType;
+
+    private bool resourceMined = false;
+
+    // Use this for initialization
+    void Start ()
     {
         worldController = GameObject.FindGameObjectWithTag("world").GetComponent<WorldController>();
         world = worldController.world;
@@ -20,6 +26,20 @@ public class BuildingController : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
+        // switch building type on B press
+        if (Input.GetKeyDown("b"))
+        {
+            if (buildingType == Building.BuildingType.House)
+            {
+                buildingType = Building.BuildingType.Mill;
+            }
+
+            else if (buildingType == Building.BuildingType.Mill)
+            {
+                buildingType = Building.BuildingType.House;
+            }
+        }
+
         if (Input.GetMouseButtonDown(0))
         {
             // Ray cast to get mouse position
@@ -35,29 +55,41 @@ public class BuildingController : MonoBehaviour {
                 int currentX = (int)objectHit.transform.position.x;
                 int currentZ = (int)objectHit.transform.position.z;
 
+                
                 // If type of tile is not building, add the building and set the type to building
-                if (world.GetTileAt(currentX, currentZ).Type != Tile.TileType.Building)
+                for (int a = currentX - 1; a <= currentX + 1; a++)
                 {
-                    for (int a = currentX - 1; a <= currentX + 1; a++)
+                    for (int b = currentZ - 1; b <= currentZ + 1; b++)
                     {
-                        for (int b = currentZ - 1; b <= currentZ + 1; b++)
+                        Tile tile_data = world.GetTileAt(a, b);
+
+                        if (world.GetWoodCount() >= 5)
                         {
-                            Tile tile_data = world.GetTileAt(a, b);
-
-                            if (world.GetWoodCount() >= 5)
+                            if (buildingType == Building.BuildingType.House)
                             {
-                                Instantiate(prefab, objectHit.position, transform.rotation);
-                                world.IncrementWoodCount(-5);
-
-                                tile_data.Type = Tile.TileType.Building;
+                                Instantiate(prefabHouse, objectHit.position, transform.rotation);
+                                resourceMined = true;
                             }
 
-                            else
+                            else if (buildingType == Building.BuildingType.Mill)
                             {
-                                Debug.LogFormat("You need more resources");
+                                Instantiate(prefabMill, objectHit.position, transform.rotation);
+                                resourceMined = true;
                             }
+                            tile_data.Type = Tile.TileType.Building;
+                        }
+
+                        else
+                        {
+                            Debug.LogFormat("You need more resources");
                         }
                     }
+                }
+                
+                if (resourceMined)
+                {
+                    world.IncrementWoodCount(-5);
+                    resourceMined = false;
                 }  
             }       
         }
