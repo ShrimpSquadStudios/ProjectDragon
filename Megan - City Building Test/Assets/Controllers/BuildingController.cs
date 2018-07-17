@@ -6,7 +6,7 @@ public class BuildingController : MonoBehaviour {
 
     public GameObject prefabHouse;
     public GameObject prefabMill;
-
+    public GameObject prefabCastle;
 
     World world;
 
@@ -14,13 +14,14 @@ public class BuildingController : MonoBehaviour {
 
     Building.BuildingType buildingType;
 
-    private bool resourceMined = false;
+    private GameObject selectionGO;
 
     // Use this for initialization
     void Start ()
     {
         worldController = GameObject.FindGameObjectWithTag("world").GetComponent<WorldController>();
         world = worldController.world;
+        buildingType = Building.BuildingType.Castle;
     }
 	
 	// Update is called once per frame
@@ -46,6 +47,8 @@ public class BuildingController : MonoBehaviour {
             // https://forum.unity.com/threads/placing-objects-with-a-mouse-click.66121/ 
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            bool validPlacement = true;
+
             if (Physics.Raycast (ray,out hit))
             {
                 // Raycast found collider
@@ -57,41 +60,66 @@ public class BuildingController : MonoBehaviour {
 
                 
                 // If type of tile is not building, add the building and set the type to building
-                for (int a = currentX - 1; a <= currentX + 1; a++)
+                if (world.GetWoodCount() >= 5)
                 {
-                    for (int b = currentZ - 1; b <= currentZ + 1; b++)
+                    validPlacement = CheckPlacement(validPlacement, objectHit, currentX, currentZ);
+
+                    if (validPlacement)
                     {
-                        Tile tile_data = world.GetTileAt(a, b);
-
-                        if (world.GetWoodCount() >= 5)
+                        if (buildingType == Building.BuildingType.Castle)
                         {
-                            if (buildingType == Building.BuildingType.House)
-                            {
-                                Instantiate(prefabHouse, objectHit.position, transform.rotation);
-                                resourceMined = true;
-                            }
-
-                            else if (buildingType == Building.BuildingType.Mill)
-                            {
-                                Instantiate(prefabMill, objectHit.position, transform.rotation);
-                                resourceMined = true;
-                            }
-                            tile_data.Type = Tile.TileType.Building;
+                            selectionGO = prefabCastle;
+                            buildingType = Building.BuildingType.House;
                         }
 
-                        else
+                        else if (buildingType == Building.BuildingType.House)
                         {
-                            Debug.LogFormat("You need more resources");
+                            selectionGO = prefabHouse;
                         }
+
+                        else if (buildingType == Building.BuildingType.Mill)
+                        {
+                            selectionGO = prefabMill;
+                        }
+                        placeBuilding(objectHit, currentX, currentZ);
                     }
                 }
-                
-                if (resourceMined)
-                {
-                    world.IncrementWoodCount(-5);
-                    resourceMined = false;
-                }  
             }       
+        }
+    }
+
+    private bool CheckPlacement(bool validPlacement, Transform objectHit, int currentX, int currentZ)
+    {
+        for (int a = currentX - 1; a <= currentX + 1; a++)
+        {
+            for (int b = currentZ - 1; b <= currentZ + 1; b++)
+            {
+                Tile tile_data = world.GetTileAt(a, b);
+                if (tile_data.Type == Tile.TileType.Building)
+                {
+                    validPlacement = false;
+                }
+            }
+        }
+
+        return validPlacement;
+    }
+
+    private void placeBuilding(Transform objectHit, int currentX, int currentZ)
+    {
+        for (int a = currentX; a <= currentX; a++)
+        {
+            for (int b = currentZ; b <= currentZ; b++)
+            {
+                Tile tile_data = world.GetTileAt(a, b);
+                tile_data.Type = Tile.TileType.Building;
+
+                if (a == currentX && b == currentZ)
+                {
+                    Instantiate(selectionGO, objectHit.position, transform.rotation);
+                    world.IncrementWoodCount(-5);
+                }
+            }
         }
     }
 }

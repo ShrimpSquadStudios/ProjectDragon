@@ -6,7 +6,7 @@ public class WorkerMovement : MonoBehaviour {
 
     GameObject[] goals;
 
-    public float collectTime = 1.0f;
+    public float collectTime = 3.0f;
     GameObject collisionGO;
     enum resourceType {Iron,Wood};
     resourceType currentResource;
@@ -51,11 +51,8 @@ public class WorkerMovement : MonoBehaviour {
                 world.IncrementWoodCount(1);
             }
             resourceCollected = false;
-        }
-
-        else
-        {
-            MoveObject();
+            Tile tile_data = world.GetTileAt((int) collisionGO.gameObject.transform.position.x, (int) collisionGO.gameObject.transform.position.z);
+            tile_data.Type = Tile.TileType.Empty;
         }
 
         if (Input.GetKeyDown("r"))
@@ -70,6 +67,8 @@ public class WorkerMovement : MonoBehaviour {
                 currentResource = resourceType.Iron;
             }
         }
+
+        MoveObject();
     }
 
     // https://docs.unity3d.com/ScriptReference/GameObject.FindGameObjectsWithTag.html

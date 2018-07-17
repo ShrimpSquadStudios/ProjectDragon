@@ -277,7 +277,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4163015935976588, guid: 5f25ceb0bd13dfd488792e49083907ad, type: 2}
       propertyPath: m_RootOrder
-      value: 6
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 114396774743018820, guid: 5f25ceb0bd13dfd488792e49083907ad,
         type: 2}
@@ -701,7 +701,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &920943526
 GameObject:
@@ -779,7 +779,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 920943526}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 53.3, y: 27.5, z: 19.2}
+  m_LocalPosition: {x: 54.64, y: 27.7, z: 20.99}
   m_LocalScale: {x: 1.0000002, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1164,7 +1164,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1410102871
 GameObject:
@@ -1196,6 +1196,8 @@ MonoBehaviour:
   prefabHouse: {fileID: 1175864388869028, guid: 982927f9fda4f604cafc7c778d0572a7,
     type: 2}
   prefabMill: {fileID: 1319434523947364, guid: 7b5accceee6f53041a4a7e1bf1892f75, type: 2}
+  prefabCastle: {fileID: 1470390854279100, guid: d74bdc3a940d83d4dbbf9f2478f0eee2,
+    type: 2}
 --- !u!4 &1410102873
 Transform:
   m_ObjectHideFlags: 0
