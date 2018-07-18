@@ -17,7 +17,7 @@ public class World
         ironCount = ironCount + ironGathered;
     }
 
-    static int woodCount;
+    static int woodCount = 5;
     public int GetWoodCount()
     {
         return woodCount;

@@ -56,17 +56,18 @@ public class WorldController : MonoBehaviour {
     {
         if (Input.GetKeyDown("w"))
         {
-            print("Spawn Worker");
-            SpawnWorker();
+            if (world.GetIronCount() >= 5)
+            {
+                print("Spawn Worker");
+                world.IncrementIronCount(-5);
+                SpawnWorker();
+            }
         }
     }
 
     public void SpawnWorker()
     {
-        if (world.GetIronCount() >= 5)
-        {
-            Instantiate(worker, this.transform.position, this.transform.rotation);
-            world.IncrementIronCount(-5);
-        }
+
+        Instantiate(worker, this.transform.position, this.transform.rotation);
     }
 }

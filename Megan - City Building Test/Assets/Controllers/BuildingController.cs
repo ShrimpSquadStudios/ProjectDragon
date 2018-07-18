@@ -9,8 +9,8 @@ public class BuildingController : MonoBehaviour {
     public GameObject prefabCastle;
 
     World world;
-
-    WorldController worldController;
+    
+    public WorldController worldController;
 
     Building.BuildingType buildingType;
 
@@ -19,7 +19,6 @@ public class BuildingController : MonoBehaviour {
     // Use this for initialization
     void Start ()
     {
-        worldController = GameObject.FindGameObjectWithTag("world").GetComponent<WorldController>();
         world = worldController.world;
         buildingType = Building.BuildingType.Castle;
     }
@@ -70,6 +69,7 @@ public class BuildingController : MonoBehaviour {
                         {
                             selectionGO = prefabCastle;
                             buildingType = Building.BuildingType.House;
+                            worldController.SpawnWorker();
                         }
 
                         else if (buildingType == Building.BuildingType.House)
