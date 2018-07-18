@@ -69,7 +69,7 @@ public class BuildingController : MonoBehaviour {
                         {
                             selectionGO = prefabCastle;
                             buildingType = Building.BuildingType.House;
-                            worldController.SpawnWorker();
+                            worldController.SpawnWorker(objectHit.position);
                         }
 
                         else if (buildingType == Building.BuildingType.House)

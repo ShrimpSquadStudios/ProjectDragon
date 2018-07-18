@@ -9,9 +9,9 @@ public class WorldController : MonoBehaviour {
     public GameObject WoodPrefab;
     public GameObject IronPrefab;
     public GameObject worker;
-
     public World world;
 
+    private Vector3 castlePosition;
 	// Use this for initialization
 	void Start () {
         world = new World();
@@ -60,14 +60,15 @@ public class WorldController : MonoBehaviour {
             {
                 print("Spawn Worker");
                 world.IncrementIronCount(-5);
-                SpawnWorker();
+                SpawnWorker(castlePosition);
             }
         }
     }
 
-    public void SpawnWorker()
+    public void SpawnWorker(Vector3 position)
     {
+        castlePosition = position;
+        Instantiate(worker, position, this.transform.rotation);
 
-        Instantiate(worker, this.transform.position, this.transform.rotation);
     }
 }
