@@ -70,16 +70,19 @@ public class BuildingController : MonoBehaviour {
                             selectionGO = prefabCastle;
                             buildingType = Building.BuildingType.House;
                             worldController.SpawnWorker(objectHit.position);
+                            Building.castleCount ++;
                         }
 
                         else if (buildingType == Building.BuildingType.House)
                         {
                             selectionGO = prefabHouse;
+                            Building.houseCount++;
                         }
 
                         else if (buildingType == Building.BuildingType.Mill)
                         {
                             selectionGO = prefabMill;
+                            Building.millCount++;
                         }
                         placeBuilding(objectHit, currentX, currentZ);
                     }

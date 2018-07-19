@@ -48,7 +48,8 @@ public class WorkerMovement : MonoBehaviour {
             }
             else if (collisionGO.gameObject.tag == "wood")
             {
-                world.IncrementWoodCount(1);
+                Debug.Log(Building.millCount);
+                world.IncrementWoodCount(1 * (Building.millCount + 1));
             }
             resourceCollected = false;
             Tile tile_data = world.GetTileAt((int) collisionGO.gameObject.transform.position.x, (int) collisionGO.gameObject.transform.position.z);
