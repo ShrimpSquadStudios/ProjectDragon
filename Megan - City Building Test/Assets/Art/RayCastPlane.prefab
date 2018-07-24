@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4868935364360008}
   - component: {fileID: 65845563153086106}
   m_Layer: 0
-  m_Name: RayCastPlane
+  m_Name: Plane_99_99
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
