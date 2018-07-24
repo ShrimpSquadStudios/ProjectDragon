@@ -339,7 +339,7 @@ MonoBehaviour:
   spr_empty: {fileID: 21300000, guid: 00075abb82664d24f8150e1381dc3c4d, type: 3}
   planePrefab: {fileID: 1929923524221438, guid: e22df4846e25ff540964ef663352a3fe,
     type: 2}
-  WoodPrefab: {fileID: 1443534773513380, guid: 8ac412c267e35164ebac74fb65516bb7, type: 2}
+  WoodPrefab: {fileID: 1218323136105684, guid: 0230bcf44f7db324fac75060ad745227, type: 2}
   IronPrefab: {fileID: 1013505705485544, guid: 97a1275a2620a4a42b4dcf0262cefdc8, type: 2}
   worker: {fileID: 1239663590086008, guid: 2c87fbfd2925230419117f41ca98b57a, type: 2}
 --- !u!222 &347582936
