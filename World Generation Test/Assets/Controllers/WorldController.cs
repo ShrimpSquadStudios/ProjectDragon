@@ -29,8 +29,8 @@ public class WorldController : MonoBehaviour {
 				goTile.AddComponent<SpriteRenderer>();
                 goTile.GetComponent<SpriteRenderer>().sprite = sprGrass;
 
-                tile.RegisterChangeTileType( 
-                    (t) => { OnTileTypeChanged(t, goTile); } 
+                tile.RegisterTileUpdated ( 
+                    (t) => { OnTileUpdated(t, goTile); } 
                 );
 			}
 		}
@@ -41,7 +41,7 @@ public class WorldController : MonoBehaviour {
     void Update() { }
 
     // Update tile sprite when tile type changes
-    void OnTileTypeChanged(Tile tile, GameObject goTile)
+    void OnTileUpdated(Tile tile, GameObject goTile)
     {
         switch (tile.Type)
         {

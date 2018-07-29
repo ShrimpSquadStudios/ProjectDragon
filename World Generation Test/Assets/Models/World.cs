@@ -5,6 +5,10 @@ using UnityEngine;
 
 public class World {
 
+    // global world settings
+    const int WORLD_WIDTH = 128;
+    const int WORLD_HEIGHT = 128;
+
     // mountain procedural generation settings
     const int MOUNTAIN_ODDS = 750; // inverse odds of a mountain spawning on a given tile
     const int MOUNTAIN_PASSES = 7; // number of map passes to fill out mountain tiles
@@ -35,7 +39,7 @@ public class World {
 		}
 	}
 
-	public World(int width = 128, int height = 128) {
+	public World(int width = WORLD_WIDTH, int height = WORLD_HEIGHT) {
 		this.width = width;
 		this.height = height;
 
@@ -166,7 +170,7 @@ public class World {
         }
         UpdateTileTypes();
 
-        // if a tile is next to two or more mountains it has a chance to become a mountain
+        // If a tile is next to two or more mountains it has a chance to become a mountain
         for (var i = 0; i < MOUNTAIN_PASSES; i++) // multiple passes to fill in the blanks
         {
             Debug.Log("Mountain pass " + i);
@@ -191,6 +195,7 @@ public class World {
         }
         UpdateTileTypes();
 
+        // Fill mountain gaps
         if (MOUNTAIN_FILL_GAPS)
             for (var x = 0; x < width; x++)
                 for (var z = 0; z < height; z++)

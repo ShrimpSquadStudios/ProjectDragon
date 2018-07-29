@@ -34,11 +34,15 @@ public class Tile {
 	World world;
 
 	int x;
-    public int X {
-        get {
+    public int X
+    {
+        get
+        {
             return x;
         }
     }
+
+    public int y;
 
 	int z;
     public int Z
@@ -52,16 +56,17 @@ public class Tile {
 	public Tile(World world, int x, int z) {
 		this.world = world;
 		this.x = x;
+        this.y = 0;
 		this.z = z;
         type = TileType.Empty;
 	}
 
-    public void RegisterChangeTileType(Action<Tile> callback)
+    public void RegisterTileUpdated(Action<Tile> callback)
     {
         changeTileType += callback;
     }
 
-    public void UnregisterChangeTileType(Action<Tile> callback)
+    public void UnregisterTileUpdated(Action<Tile> callback)
     {
         changeTileType -= callback;
     }
