@@ -11,6 +11,8 @@ public class WorldController : MonoBehaviour {
     public GameObject worker;
     public World world;
 
+    public int numWorkers = 0;
+
     private Vector3 castlePosition;
 	// Use this for initialization
 	void Start () {
@@ -54,6 +56,7 @@ public class WorldController : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
+        // if valid spawn a worker
         if (Input.GetKeyDown("w"))
         {
             if (world.GetIronCount() >= 5)
@@ -65,10 +68,11 @@ public class WorldController : MonoBehaviour {
         }
     }
 
+    // Instantiate a worker at the castle position
     public void SpawnWorker(Vector3 position)
     {
         castlePosition = position;
         Instantiate(worker, position, this.transform.rotation);
-
+        numWorkers++;
     }
 }

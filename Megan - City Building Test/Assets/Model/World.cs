@@ -6,6 +6,7 @@ public class World
 {
     Tile[,] tiles;
 
+    // Get and set resources
     static int ironCount;
     public int GetIronCount()
     {

@@ -4,23 +4,28 @@ using UnityEngine;
 
 public class WorkerMovement : MonoBehaviour {
 
+    // refactor this shit (worker stats) to be in a class
+
+    // Resource for worker to collect
     GameObject[] goals;
-
-    public float collectTime = 3.0f;
     GameObject collisionGO;
-    enum resourceType {Iron,Wood};
-    resourceType currentResource;
 
-    private float timer;
-    private bool timerActive = false;
-    private bool resourceCollected = false;
-
+    // Get the world and world controller classes
     World world;
     WorldController worldController;
+
+    enum resourceType {Iron,Wood};
+
+    // No other script needs to know about hunger... for now
+    private float hunger;
+    private resourceType currentResource;
+    private bool resourceCollected = false;
 
     // Use this for initialization
     void Start()
     {
+        // Initialize hunger to 100 for each worker
+        this.hunger = 100;
         worldController = GameObject.FindGameObjectWithTag("world").GetComponent<WorldController>();
         world = worldController.world;
         currentResource = resourceType.Wood;
@@ -29,17 +34,24 @@ public class WorkerMovement : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-         if (timerActive)
+        // Every tick, make the workers hungrier. The number of workers / mill count will change the speed of death
+        hunger -= (0.01f * (float)worldController.numWorkers) / ((float)(Building.millCount) + 1);
+        Debug.Log(hunger);
+
+        // If the worker starves, kill it and reduce worker count, otherwise move the worker
+        if (hunger <= 0)
         {
-            timer += 1 * Time.deltaTime;
-            if (timer > collectTime)
-            {
-                timerActive = false;
-                timer = 0.0f;
-            }
+            Destroy(gameObject);
+            Destroy(this);
+            worldController.numWorkers -= 1;
+        }
+        else
+        {
+            MoveObject();
         }
 
-        if (!timerActive && resourceCollected)
+        // Check what type of resource is collected and increase the count of that resource
+        if (resourceCollected)
         {
             Destroy(collisionGO);
             if (collisionGO.gameObject.tag == "Iron")
@@ -48,14 +60,14 @@ public class WorkerMovement : MonoBehaviour {
             }
             else if (collisionGO.gameObject.tag == "wood")
             {
-                Debug.Log(Building.millCount);
-                world.IncrementWoodCount(1 * (Building.millCount + 1));
+                world.IncrementWoodCount(1);
             }
             resourceCollected = false;
             Tile tile_data = world.GetTileAt((int) collisionGO.gameObject.transform.position.x, (int) collisionGO.gameObject.transform.position.z);
             tile_data.Type = Tile.TileType.Empty;
         }
 
+        // on r press, toggle the type of resource the worker collects
         if (Input.GetKeyDown("r"))
         {
             if (currentResource == resourceType.Iron)
@@ -68,8 +80,6 @@ public class WorkerMovement : MonoBehaviour {
                 currentResource = resourceType.Iron;
             }
         }
-
-        MoveObject();
     }
 
     // https://docs.unity3d.com/ScriptReference/GameObject.FindGameObjectsWithTag.html
@@ -110,7 +120,6 @@ public class WorkerMovement : MonoBehaviour {
     {
         if (collision.gameObject.tag == "Iron" || collision.gameObject.tag == "wood")
         {
-            timerActive = true;
             resourceCollected = true;
             collisionGO = collision.gameObject;
             world = worldController.world;

@@ -91,6 +91,7 @@ public class BuildingController : MonoBehaviour {
         }
     }
 
+    // Check a grid around a point to see if it is a valid building placement
     private bool CheckPlacement(bool validPlacement, Transform objectHit, int currentX, int currentZ)
     {
         for (int a = currentX - 1; a <= currentX + 1; a++)
@@ -108,6 +109,7 @@ public class BuildingController : MonoBehaviour {
         return validPlacement;
     }
 
+    // Place building at raycast location
     private void placeBuilding(Transform objectHit, int currentX, int currentZ)
     {
         for (int a = currentX; a <= currentX; a++)
