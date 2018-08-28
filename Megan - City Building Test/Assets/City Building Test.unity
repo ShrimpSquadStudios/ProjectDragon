@@ -342,6 +342,7 @@ MonoBehaviour:
   WoodPrefab: {fileID: 1218323136105684, guid: 0230bcf44f7db324fac75060ad745227, type: 2}
   IronPrefab: {fileID: 1013505705485544, guid: 97a1275a2620a4a42b4dcf0262cefdc8, type: 2}
   worker: {fileID: 1239663590086008, guid: 2c87fbfd2925230419117f41ca98b57a, type: 2}
+  numWorkers: 0
 --- !u!222 &347582936
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -707,6 +708,50 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &894375821
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 894375823}
+  - component: {fileID: 894375822}
+  m_Layer: 0
+  m_Name: scr_dayNight
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &894375822
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 894375821}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b88c17d9dd202b46b9358392d06fb43, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sun: {fileID: 44459348}
+  secondsInFullDay: 30
+  currentTimeOfDay: 0
+  timeMultiplier: 1
+--- !u!4 &894375823
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 894375821}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 30.192585, y: 24.545631, z: 162.27864}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &920943526
 GameObject:
