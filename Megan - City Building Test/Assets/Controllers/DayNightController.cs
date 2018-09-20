@@ -10,12 +10,14 @@ public class DayNightController : MonoBehaviour
     public float currentTimeOfDay = 0;
     [HideInInspector]
     public float timeMultiplier = 1f;
+    public Animator workerAnimator;
 
     float sunInitialIntensity;
 
     void Start()
     {
         sunInitialIntensity = sun.intensity;
+        
     }
 
     void Update()
@@ -28,6 +30,17 @@ public class DayNightController : MonoBehaviour
         {
             currentTimeOfDay = 0;
         }
+
+        if (currentTimeOfDay >= 0.5)
+        {
+            workerAnimator.SetBool("IsDay",true);
+        }
+        else
+        {
+            workerAnimator.SetBool("IsDay", false);
+        }
+
+        Debug.Log(workerAnimator.GetBool("IsDay"));
     }
 
     void UpdateSun()
